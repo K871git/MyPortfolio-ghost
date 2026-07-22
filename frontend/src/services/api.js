@@ -1,8 +1,14 @@
 import axios from 'axios';
 
+// In local dev (npm run dev), Vite proxies /api to localhost:8000.
+// In production builds, default straight to the live Render backend —
+// this no longer depends on a Netlify dashboard env var being set correctly.
+const baseURL = import.meta.env.VITE_API_BASE
+  || (import.meta.env.DEV ? '/api' : 'https://myportfolio-ghost.onrender.com/api');
+
 const client = axios.create({
-  baseURL: '/api',
-  timeout: 8000,
+  baseURL,
+  timeout: 45000,
   headers: { Accept: 'application/json' },
 });
 

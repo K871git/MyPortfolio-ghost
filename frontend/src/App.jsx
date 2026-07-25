@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import BootSequence from './components/boot/BootSequence';
 import DotGrid from './components/boot/DotGrid';
+import GhostBackground from './components/layout/GhostBackground';
 import CustomCursor from './components/layout/CustomCursor';
 import Nav from './components/layout/Nav';
 import Hero from './components/layout/Hero';
@@ -46,6 +47,7 @@ export default function App() {
 
       {(bootComplete || skipBoot) && (
         <div className="relative">
+          <GhostBackground />
           <DotGrid />
           <Nav status={usePortfolioStore.getState().identity.availability} />
 

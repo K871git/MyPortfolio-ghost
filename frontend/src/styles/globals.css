@@ -23,9 +23,22 @@ body {
   cursor: none;
 }
 
+/* The browser's own pointer/hand cursor renders on links and buttons
+   regardless of body's cursor, since 'auto' resolves to a pointer for
+   clickable elements. Force it off everywhere so only the custom skull
+   cursor is ever shown. */
+a, button, [role="button"], input, textarea, select, label, summary,
+[data-cursor="interactive"] {
+  cursor: none !important;
+}
+
 @media (max-width: 768px), (hover: none) {
   body {
     cursor: auto;
+  }
+  a, button, [role="button"], input, textarea, select, label, summary,
+  [data-cursor="interactive"] {
+    cursor: auto !important;
   }
   .custom-cursor {
     display: none !important;

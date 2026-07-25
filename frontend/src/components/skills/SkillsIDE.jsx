@@ -77,7 +77,7 @@ export default function SkillsIDE({ skills }) {
             <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
             <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
             <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
-            <span className="ml-3 font-mono text-xs text-muted">explorer — synapse-os</span>
+            <span className="ml-3 font-mono text-xs text-muted">explorer — ghost-os</span>
           </div>
 
           <div className="p-3">

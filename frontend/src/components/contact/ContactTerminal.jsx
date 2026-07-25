@@ -137,7 +137,7 @@ export default function ContactTerminal({ contact, status }) {
             <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
             <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
             <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
-            <span className="ml-3 font-mono text-xs text-muted">kishor@synapse-os: ~</span>
+            <span className="ml-3 font-mono text-xs text-muted">kishor@ghost-os: ~</span>
           </div>
 
           <div className="p-5 font-mono text-sm min-h-[220px] max-h-[420px] overflow-y-auto">

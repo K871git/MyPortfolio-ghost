@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 
 const LINKS = [
-  { label: 'about', href: '#about' },
-  { label: 'toolbox', href: '#toolbox' },
-  { label: 'projects', href: '#projects' },
   { label: 'experience', href: '#experience' },
+  { label: 'projects', href: '#projects' },
+  { label: 'toolbox', href: '#toolbox' },
+  { label: 'process', href: '#about' },
   { label: 'resume', href: '#resume' },
   { label: 'contact', href: '#contact' },
 ];
@@ -23,7 +23,7 @@ export default function Nav({ status = 'Available for opportunities' }) {
           data-cursor="interactive"
           className="font-mono text-sm tracking-widest text-ink"
         >
-          SYNAPSE<span className="text-blue">/OS</span>
+          GHOST<span className="text-blue">/OS</span>
         </a>
 
         <ul className="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest text-muted">

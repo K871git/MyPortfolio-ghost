@@ -5,12 +5,12 @@ import TypedLine from './TypedLine';
 import useReducedMotion from '../../hooks/useReducedMotion';
 
 const BOOT_LINES = [
-  'synapse/os v2.4.0',
+  'ghost/os v1.0.0',
   'initializing system...',
   'loading engineering profile...',
   'mounting backend services... OK',
   'mounting frontend runtime... OK',
-  'system ready.',
+  'system ready. made by kishor.',
 ];
 
 export default function BootSequence({ identity, onComplete }) {

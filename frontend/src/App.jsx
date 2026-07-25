@@ -24,7 +24,7 @@ export default function App() {
   const skills = usePortfolioStore((s) => s.skills);
   const experiences = usePortfolioStore((s) => s.experiences);
 
-  const [skipBoot] = useState(() => sessionStorage.getItem('synapse-booted') === '1');
+  const [skipBoot] = useState(() => sessionStorage.getItem('ghost-os-booted') === '1');
 
   useEffect(() => {
     hydrate();
@@ -32,7 +32,7 @@ export default function App() {
   }, []);
 
   function handleBootComplete() {
-    sessionStorage.setItem('synapse-booted', '1');
+    sessionStorage.setItem('ghost-os-booted', '1');
     setBootComplete();
   }
 
@@ -51,10 +51,10 @@ export default function App() {
 
           <main className="relative z-10">
             <Hero identity={identity} />
-            <ProcessFlow steps={aboutSteps} />
-            <SkillsIDE skills={skills} />
-            <ProjectsSection />
             <ExperienceLog experiences={experiences} />
+            <ProjectsSection />
+            <SkillsIDE skills={skills} />
+            <ProcessFlow steps={aboutSteps} />
             <ResumeViewer identity={identity} />
             <ContactTerminal contact={contact} status="Available for opportunities" />
           </main>

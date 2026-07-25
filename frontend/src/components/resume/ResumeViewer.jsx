@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SectionHeading from '../ui/SectionHeading';
 
-const RESUME_PDF_PATH = '/resume.pdf'; // drop the actual PDF into frontend/public/resume.pdf
+const RESUME_PDF_PATH = '/Kishor_Gangarde_Resume1.pdf'; // must exactly match the filename in frontend/public/
 
 export default function ResumeViewer({ identity }) {
   const [open, setOpen] = useState(false);
@@ -69,7 +69,7 @@ export default function ResumeViewer({ identity }) {
               onClick={(e) => e.stopPropagation()}
               className="bg-surface rounded-lg w-full max-w-3xl h-[85vh] flex flex-col overflow-hidden border border-white/10"
             >
-              <div className="flex items-center justify-between px-5 py-3 border-b border-white/10 bg-elevated">
+              <div className="relative z-10 flex items-center justify-between px-5 py-3 border-b border-white/10 bg-elevated">
                 <span className="font-mono text-xs text-muted">Resume.md — Document Viewer</span>
                 <div className="flex items-center gap-3">
                   <a
@@ -81,9 +81,13 @@ export default function ResumeViewer({ identity }) {
                     Download PDF ↓
                   </a>
                   <button
+                    type="button"
                     data-cursor="interactive"
-                    onClick={() => setOpen(false)}
-                    className="font-mono text-xs text-muted hover:text-ink"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setOpen(false);
+                    }}
+                    className="font-mono text-xs text-muted hover:text-ink cursor-pointer"
                   >
                     ✕
                   </button>
@@ -92,7 +96,7 @@ export default function ResumeViewer({ identity }) {
               <iframe
                 title="Resume"
                 src={RESUME_PDF_PATH}
-                className="flex-1 w-full bg-white"
+                className="relative z-0 flex-1 w-full bg-white"
               />
             </motion.div>
           </motion.div>

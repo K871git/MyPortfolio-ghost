@@ -1,88 +1,118 @@
 import { useEffect, useRef } from 'react';
 import useReducedMotion from '../../hooks/useReducedMotion';
 
-/**
- * Same original hand-authored skull silhouette as CustomCursor.jsx, scaled
- * up for use as a full-scene mural. Not a recreation of any copyrighted
- * character mask/logo — a classic front-facing skull shape.
- */
-const SKULL_D =
-  'M50 6C71 6 86 23 86 44C86 54 82 62 74 69L74 78C74 82 71 85 66 85L66 78L58 78L58 85L50 85L50 78L42 78L42 85L34 85C29 85 26 82 26 78L26 69C18 62 14 54 14 44C14 23 29 6 50 6Z';
-
-function Skull({ fill, opacity = 1 }) {
-  return (
-    <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%' }}>
-      <path d={SKULL_D} fill={fill} fillOpacity={opacity} />
-      <ellipse cx="36" cy="40" rx="8" ry="10" fill="#050505" fillOpacity={opacity} />
-      <ellipse cx="64" cy="40" rx="8" ry="10" fill="#050505" fillOpacity={opacity} />
-      <path d="M50 46L44 59L56 59Z" fill="#050505" fillOpacity={opacity} />
-      {/* Jaw teeth dividers, only readable at this larger mural size */}
-      <line x1="42" y1="78" x2="42" y2="85" stroke="#050505" strokeWidth="1.4" opacity={opacity} />
-      <line x1="50" y1="78" x2="50" y2="85" stroke="#050505" strokeWidth="1.4" opacity={opacity} />
-      <line x1="58" y1="78" x2="58" y2="85" stroke="#050505" strokeWidth="1.4" opacity={opacity} />
-      <line x1="66" y1="78" x2="66" y2="85" stroke="#050505" strokeWidth="1.4" opacity={opacity} />
-    </svg>
-  );
-}
+const DIGIT_SPACING = 42;
+const DIGIT_JITTER = 9;
+const DIGIT_BASE_OPACITY = 0.03;
+const DIGIT_TORCH_OPACITY = 0.5;
+const TORCH_RADIUS_PX = 190;
+const FLICKER_MS = 220;
+const FLICKER_FRACTION = 0.015;
+const COLOR = '79, 140, 255';
 
 /**
- * Sits behind all content, fixed to the viewport. A dim "hint" copy of the
- * skull is always faintly visible against the dark background; a brighter
- * copy is masked with a soft radial gradient centered on the mouse, so
- * moving the cursor feels like sweeping a torch across a dark wall.
- * Falls back to a static dim skull (no mouse tracking) under
- * prefers-reduced-motion.
+ * A full-page ambient field of faint 0/1 digits — no skull, no shape,
+ * just a scattered "code in the dark" texture. Near-invisible by default;
+ * brightens into a soft blue readable cluster wherever the cursor moves.
+ * Redraws are event-driven (mouse move / resize / a slow flicker tick),
+ * not a continuous animation loop. Falls back to a fixed faint field, no
+ * cursor tracking or flicker, under prefers-reduced-motion.
  */
 export default function GhostBackground() {
-  const wrapRef = useRef(null);
+  const canvasRef = useRef(null);
+  const mouseRef = useRef({ x: -9999, y: -9999 });
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (reducedMotion) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let width, height, points = [];
+    let rafScheduled = false;
+    let flickerTimer;
 
-    function onMove(e) {
-      const el = wrapRef.current;
-      if (!el) return;
-      el.style.setProperty('--gx', `${e.clientX}px`);
-      el.style.setProperty('--gy', `${e.clientY}px`);
+    function rebuild() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+
+      const cols = Math.ceil(width / DIGIT_SPACING) + 1;
+      const rows = Math.ceil(height / DIGIT_SPACING) + 1;
+      const next = [];
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const x = c * DIGIT_SPACING + (Math.random() - 0.5) * DIGIT_JITTER;
+          const y = r * DIGIT_SPACING + (Math.random() - 0.5) * DIGIT_JITTER;
+          next.push({ x, y, digit: Math.random() > 0.5 ? '1' : '0' });
+        }
+      }
+      points = next;
+      render();
     }
 
-    window.addEventListener('mousemove', onMove, { passive: true });
-    return () => window.removeEventListener('mousemove', onMove);
+    function render() {
+      rafScheduled = false;
+      ctx.clearRect(0, 0, width, height);
+      ctx.font = '13px "JetBrains Mono", monospace';
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+
+      const mx = mouseRef.current.x;
+      const my = mouseRef.current.y;
+
+      for (let i = 0; i < points.length; i++) {
+        const pt = points[i];
+        const dx = pt.x - mx;
+        const dy = pt.y - my;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const near = reducedMotion ? 0 : Math.max(0, 1 - dist / TORCH_RADIUS_PX);
+
+        const alpha = Math.min(1, DIGIT_BASE_OPACITY + near * DIGIT_TORCH_OPACITY);
+        if (alpha < 0.02) continue;
+
+        ctx.fillStyle = `rgba(${COLOR}, ${alpha})`;
+        ctx.fillText(pt.digit, pt.x, pt.y);
+      }
+    }
+
+    function scheduleRender() {
+      if (rafScheduled) return;
+      rafScheduled = true;
+      requestAnimationFrame(render);
+    }
+
+    function onMouseMove(e) {
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+      scheduleRender();
+    }
+
+    function flickerTick() {
+      const swapCount = Math.max(1, Math.floor(points.length * FLICKER_FRACTION));
+      for (let i = 0; i < swapCount; i++) {
+        const p = points[(Math.random() * points.length) | 0];
+        if (p) p.digit = Math.random() > 0.5 ? '1' : '0';
+      }
+      scheduleRender();
+    }
+
+    rebuild();
+    window.addEventListener('resize', rebuild);
+
+    if (!reducedMotion) {
+      window.addEventListener('mousemove', onMouseMove, { passive: true });
+      flickerTimer = setInterval(flickerTick, FLICKER_MS);
+    }
+
+    return () => {
+      window.removeEventListener('resize', rebuild);
+      window.removeEventListener('mousemove', onMouseMove);
+      clearInterval(flickerTimer);
+    };
   }, [reducedMotion]);
 
   return (
-    <div
-      ref={wrapRef}
+    <canvas
+      ref={canvasRef}
       aria-hidden="true"
-      className="fixed inset-0 z-0 pointer-events-none overflow-hidden"
-      style={{ '--gx': '50vw', '--gy': '40vh' }}
-    >
-      {/* Dim hint layer — always just barely visible, like a shape in the dark */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-[0.05]">
-        <div style={{ width: 'min(85vh, 85vw)', height: 'min(85vh, 85vw)' }}>
-          <Skull fill="#FAFAFA" />
-        </div>
-      </div>
-
-      {/* Torch-revealed bright layer — masked to a soft circle around the cursor */}
-      <div
-        className="absolute inset-0 flex items-center justify-center"
-        style={
-          reducedMotion
-            ? { opacity: 0.08 }
-            : {
-                WebkitMaskImage:
-                  'radial-gradient(circle 200px at var(--gx) var(--gy), black 0%, transparent 72%)',
-                maskImage:
-                  'radial-gradient(circle 200px at var(--gx) var(--gy), black 0%, transparent 72%)',
-              }
-        }
-      >
-        <div style={{ width: 'min(85vh, 85vw)', height: 'min(85vh, 85vw)' }}>
-          <Skull fill="#4F8CFF" opacity={0.9} />
-        </div>
-      </div>
-    </div>
+      className="fixed inset-0 z-0 pointer-events-none"
+    />
   );
 }

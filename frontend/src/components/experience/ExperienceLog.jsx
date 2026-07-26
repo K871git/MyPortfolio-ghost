@@ -23,11 +23,20 @@ function CommitEntry({ exp, index }) {
       <span className="absolute -left-[7px] top-1 w-3.5 h-3.5 rounded-full bg-blue ring-4 ring-bg" />
 
       <button
+        type="button"
         data-cursor="interactive"
         onClick={() => setOpen((o) => !o)}
-        className="text-left w-full group"
+        className="text-left w-full group relative"
       >
-        <div className="flex flex-wrap items-baseline gap-3">
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.25 }}
+          className="absolute right-0 top-1 font-mono text-sm text-muted group-hover:text-blue"
+          aria-hidden="true"
+        >
+          ▾
+        </motion.span>
+        <div className="flex flex-wrap items-baseline gap-3 pr-8">
           <span className="font-mono text-xs text-success">
             #{shortHash(exp.company_name + exp.role)}
           </span>

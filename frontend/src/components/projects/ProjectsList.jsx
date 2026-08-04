@@ -20,7 +20,7 @@ export default function ProjectsSection() {
           description="Each one includes the architecture, the schema, the trade-offs, and what I'd do differently now."
         />
 
-        <div className="mt-16">
+        <div className="mt-16 grid sm:grid-cols-2 gap-5 items-stretch">
           {projects.map((project) => (
             <ProjectRow key={project.slug} project={project} onOpen={openProject} />
           ))}

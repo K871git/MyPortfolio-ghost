@@ -69,16 +69,16 @@ export default function ResumeViewer({ identity }) {
               onClick={(e) => e.stopPropagation()}
               className="bg-surface rounded-lg w-full max-w-3xl h-[85vh] flex flex-col overflow-hidden border border-white/10"
             >
-              <div className="relative z-10 flex items-center justify-between px-5 py-3 border-b border-white/10 bg-elevated">
-                <span className="font-mono text-xs text-muted">Resume.md — Document Viewer</span>
-                <div className="flex items-center gap-3">
+              <div className="relative z-10 flex items-center justify-between px-4 py-3 border-b border-white/10 bg-elevated">
+                <span className="font-mono text-xs text-muted truncate pr-2">Resume.md — Document Viewer</span>
+                <div className="flex items-center gap-2 flex-shrink-0">
                   <a
                     href={RESUME_PDF_PATH}
                     download
                     data-cursor="interactive"
-                    className="font-mono text-xs text-blue hover:underline"
+                    className="font-mono text-xs text-blue hover:underline whitespace-nowrap"
                   >
-                    Download PDF ↓
+                    Download ↓
                   </a>
                   <button
                     type="button"
@@ -87,12 +87,30 @@ export default function ResumeViewer({ identity }) {
                       e.stopPropagation();
                       setOpen(false);
                     }}
-                    className="font-mono text-xs text-muted hover:text-ink cursor-pointer"
+                    aria-label="Close resume viewer"
+                    className="flex items-center justify-center w-9 h-9 rounded-full text-muted hover:text-ink hover:bg-white/5 active:scale-95 transition-all"
+                    style={{ touchAction: 'manipulation' }}
                   >
                     ✕
                   </button>
                 </div>
               </div>
+
+              {/* Redundant fixed close button — reachable even if the modal
+                  is scrolled or the header is obscured on small screens */}
+              <button
+                type="button"
+                data-cursor="interactive"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpen(false);
+                }}
+                aria-label="Close resume viewer"
+                className="fixed top-4 right-4 z-20 flex items-center justify-center w-11 h-11 rounded-full bg-elevated border border-white/15 text-muted hover:text-ink hover:border-blue/40 active:scale-95 transition-all md:hidden"
+                style={{ touchAction: 'manipulation' }}
+              >
+                ✕
+              </button>
               <iframe
                 title="Resume"
                 src={RESUME_PDF_PATH}

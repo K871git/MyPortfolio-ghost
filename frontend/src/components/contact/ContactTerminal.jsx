@@ -1,15 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Linkedin, Github, FileText, Activity, Phone, MessageSquare } from 'lucide-react';
 import SectionHeading from '../ui/SectionHeading';
 import { api } from '../../services/api';
 
 const COMMANDS = [
-  { cmd: 'email', label: 'email' },
-  { cmd: 'linkedin', label: 'linkedin' },
-  { cmd: 'github', label: 'github' },
-  { cmd: 'resume', label: 'resume' },
-  { cmd: 'status', label: 'status' },
-  { cmd: 'message', label: 'message' },
+  { cmd: 'email', label: 'email', Icon: Mail },
+  { cmd: 'phone', label: 'phone', Icon: Phone },
+  { cmd: 'linkedin', label: 'linkedin', Icon: Linkedin },
+  { cmd: 'github', label: 'github', Icon: Github },
+  { cmd: 'resume', label: 'resume', Icon: FileText },
+  { cmd: 'status', label: 'status', Icon: Activity },
+  { cmd: 'message', label: 'message', Icon: MessageSquare },
 ];
 
 function ContactForm({ onSent }) {
@@ -72,8 +74,9 @@ function ContactForm({ onSent }) {
         />
       </div>
       <button
+        type="button"
+        onClick={handleSubmit}
         data-cursor="interactive"
-        type="submit"
         disabled={state === 'sending'}
         className="font-mono text-xs uppercase tracking-widest px-4 py-2 rounded border border-blue text-blue hover:bg-blue/10 transition-colors disabled:opacity-50"
       >
@@ -100,20 +103,46 @@ export default function ContactTerminal({ contact, status }) {
     let output;
     switch (cmd) {
       case 'email':
-        output = <a href={`mailto:${contact.email}`} className="text-blue hover:underline">{contact.email}</a>;
+        output = (
+          <a href={`mailto:${contact.email}`} data-cursor="interactive" className="flex items-center gap-2 text-blue hover:underline">
+            <Mail size={13} /> {contact.email}
+          </a>
+        );
+        break;
+      case 'phone':
+        output = contact.phone ? (
+          <a href={`tel:${contact.phone.replace(/\s+/g, '')}`} data-cursor="interactive" className="flex items-center gap-2 text-blue hover:underline">
+            <Phone size={13} /> {contact.phone}
+          </a>
+        ) : (
+          <span className="text-orange">no phone number on file</span>
+        );
         break;
       case 'linkedin':
-        output = <a href={contact.linkedin} target="_blank" rel="noreferrer" className="text-blue hover:underline">{contact.linkedin}</a>;
+        output = (
+          <a href={contact.linkedin} target="_blank" rel="noreferrer" data-cursor="interactive" className="flex items-center gap-2 text-blue hover:underline">
+            <Linkedin size={13} /> {contact.linkedin}
+          </a>
+        );
         break;
       case 'github':
-        output = <a href={contact.github} target="_blank" rel="noreferrer" className="text-blue hover:underline">{contact.github}</a>;
+        output = (
+          <a href={contact.github} target="_blank" rel="noreferrer" data-cursor="interactive" className="flex items-center gap-2 text-blue hover:underline">
+            <Github size={13} /> {contact.github}
+          </a>
+        );
         break;
       case 'resume':
-        output = <a href="#resume" className="text-blue hover:underline">jump to Resume.md ↑</a>;
+        output = (
+          <a href="#resume" data-cursor="interactive" className="flex items-center gap-2 text-blue hover:underline">
+            <FileText size={13} /> jump to Resume.md ↑
+          </a>
+        );
         break;
       case 'status':
         output = (
           <span className="flex items-center gap-2 text-success">
+            <Activity size={13} />
             <span className="w-2 h-2 rounded-full bg-success animate-pulseDot" /> {status}
           </span>
         );
@@ -166,14 +195,16 @@ export default function ContactTerminal({ contact, status }) {
           </div>
 
           <div className="flex flex-wrap gap-2 px-5 pb-5">
-            {COMMANDS.map((c) => (
+            {COMMANDS.map(({ cmd, label, Icon }) => (
               <button
-                key={c.cmd}
+                key={cmd}
+                type="button"
                 data-cursor="interactive"
-                onClick={() => run(c.cmd)}
-                className="font-mono text-xs px-3 py-1.5 rounded border border-white/10 text-muted hover:text-ink hover:border-blue/50 transition-colors"
+                onClick={() => run(cmd)}
+                className="flex items-center gap-1.5 font-mono text-xs px-3 py-1.5 rounded border border-white/10 text-muted hover:text-ink hover:border-blue/50 transition-colors"
               >
-                --{c.label}
+                <Icon size={12} />
+                --{label}
               </button>
             ))}
           </div>

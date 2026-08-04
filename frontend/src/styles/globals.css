@@ -52,6 +52,16 @@ a, button, [role="button"], input, textarea, select, label, summary,
 h1, h2, h3, h4 {
   font-family: 'Space Grotesk', sans-serif;
   letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+p {
+  line-height: 1.7;
+}
+
+::selection {
+  background: rgba(79, 140, 255, 0.28);
+  color: #fafafa;
 }
 
 .font-mono, code, pre {
@@ -74,16 +84,47 @@ h1, h2, h3, h4 {
   background: #333333;
 }
 
-/* Section rhythm */
+/* Hides scrollbar on horizontally-scrollable nav strips (jump-nav, etc)
+   while keeping them scrollable via touch/trackpad. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Remove the gray flash Android/iOS shows on tap, and ensure taps register
+   immediately rather than waiting for a possible double-tap-to-zoom. */
+a, button, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Section rhythm — tightened for a more compact, professional feel */
 .section {
-  padding-top: 120px;
-  padding-bottom: 120px;
+  padding-top: 90px;
+  padding-bottom: 90px;
+  position: relative;
 }
 @media (min-width: 1024px) {
   .section {
-    padding-top: 180px;
-    padding-bottom: 180px;
+    padding-top: 130px;
+    padding-bottom: 130px;
   }
+}
+
+/* A faint horizontal fade at the top of each section, instead of a hard
+   border — reads as more premium/seamless between sections. */
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(100%, 1200px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
 }
 
 .container-os {
@@ -115,4 +156,42 @@ h1, h2, h3, h4 {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* Shared button styles — consistent, elegant, used across Hero/Contact/etc */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 0.6rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-primary {
+  background: rgba(79, 140, 255, 0.12);
+  border: 1px solid rgba(79, 140, 255, 0.4);
+  color: #4f8cff;
+}
+.btn-primary:hover {
+  background: rgba(79, 140, 255, 0.2);
+  border-color: rgba(79, 140, 255, 0.7);
+  box-shadow: 0 0 24px rgba(79, 140, 255, 0.18);
+}
+.btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #b3b3b3;
+}
+.btn-secondary:hover {
+  color: #fafafa;
+  border-color: rgba(255, 255, 255, 0.3);
 }

@@ -52,7 +52,7 @@ export default function App() {
           <Nav status={usePortfolioStore.getState().identity.availability} />
 
           <main className="relative z-10">
-            <Hero identity={identity} contact={contact} />
+            <Hero identity={identity} />
             <ExperienceLog experiences={experiences} />
             <ProjectsSection />
             <SkillsIDE skills={skills} />

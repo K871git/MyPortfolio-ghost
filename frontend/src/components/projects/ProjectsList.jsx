@@ -1,8 +1,8 @@
+import { AnimatePresence } from 'framer-motion';
 import SectionHeading from '../ui/SectionHeading';
 import ProjectRow from './ProjectRow';
 import CaseStudyOverlay from './CaseStudyOverlay';
 import usePortfolioStore from '../../store/usePortfolioStore';
-import { AnimatePresence } from 'framer-motion';
 
 export default function ProjectsSection() {
   const projects = usePortfolioStore((s) => s.projects);
@@ -21,8 +21,8 @@ export default function ProjectsSection() {
         />
 
         <div className="mt-16 grid sm:grid-cols-2 gap-5 items-stretch">
-          {projects.map((project) => (
-            <ProjectRow key={project.slug} project={project} onOpen={openProject} />
+          {projects.map((project, index) => (
+            <ProjectRow key={project.slug} project={project} index={index} onOpen={openProject} />
           ))}
         </div>
       </div>

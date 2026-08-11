@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 // Confirmed working — kept to a single canonical path now that the
 // original loading issue is resolved. Rename your photo to exactly this.
-const PROFILE_IMAGE_PATH = '/profile.jpg';
+const PROFILE_IMAGE_PATH = '/profile1.jpeg';
 
 function ProfilePhoto() {
   return (
@@ -29,7 +29,7 @@ function ProfilePhoto() {
         style={{
           inset: -5,
           border: '1.5px solid transparent',
-          backgroundImage: 'linear-gradient(#050505, #050505), linear-gradient(135deg, #4F8CFF, #FF8A00 140%)',
+          // backgroundImage: 'linear-gradient(#050505, #050505), linear-gradient(135deg, #4F8CFF, #FF8A00 140%)',
           backgroundOrigin: 'border-box',
           backgroundClip: 'content-box, border-box',
         }}

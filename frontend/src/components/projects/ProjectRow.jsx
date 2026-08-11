@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FolderGit2, ArrowUpRight } from 'lucide-react';
+import { FolderGit2, ArrowUpRight, Sparkles, Code2 } from 'lucide-react';
 
 // Each project cycles through a small accent palette so cards are visually
 // distinct at a glance, instead of every card being the same uniform blue.
@@ -11,6 +11,7 @@ const ACCENTS = [
 
 export default function ProjectRow({ project, index = 0, onOpen }) {
   const accent = ACCENTS[index % ACCENTS.length];
+  const highlight = project.outcome_metrics?.[0];
 
   return (
     <motion.button
@@ -63,6 +64,14 @@ export default function ProjectRow({ project, index = 0, onOpen }) {
 
         <p className="text-muted text-sm leading-relaxed flex-1">{project.description}</p>
 
+        {/* Quick-glance detail row — recruiter sees substance before clicking */}
+        {highlight && (
+          <div className={`flex items-center gap-1.5 mt-3 px-2.5 py-1.5 rounded-md ${accent.bg} border ${accent.border}`}>
+            <Sparkles size={11} className={`${accent.text} flex-shrink-0`} />
+            <span className="font-mono text-[10.5px] text-muted leading-snug">{highlight}</span>
+          </div>
+        )}
+
         <div className="flex flex-wrap gap-1.5 mt-4">
           {project.tech_stack?.slice(0, 4).map((tech) => (
             <span
@@ -74,8 +83,13 @@ export default function ProjectRow({ project, index = 0, onOpen }) {
           ))}
         </div>
 
-        <div className={`flex items-center gap-1.5 mt-5 font-mono text-xs ${accent.text} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
-          open case study <ArrowUpRight size={13} />
+        <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/5">
+          <span className="flex items-center gap-1.5 font-mono text-[10px] text-muted">
+            <Code2 size={11} /> {project.tech_stack?.length ?? 0} technologies
+          </span>
+          <span className={`flex items-center gap-1.5 font-mono text-xs ${accent.text} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}>
+            open case study <ArrowUpRight size={13} />
+          </span>
         </div>
       </div>
     </motion.button>

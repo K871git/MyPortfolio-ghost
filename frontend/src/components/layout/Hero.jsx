@@ -1,9 +1,8 @@
 import { motion } from 'framer-motion';
 
-// Rename whichever photo you want to use to exactly this filename and
-// place it directly in frontend/public/. Delete the other profile* files
-// so there's no ambiguity about which one is active.
-const PROFILE_IMAGE_PATH = '/profile.png';
+// Confirmed working — kept to a single canonical path now that the
+// original loading issue is resolved. Rename your photo to exactly this.
+const PROFILE_IMAGE_PATH = '/profile.jpg';
 
 function ProfilePhoto() {
   return (
@@ -14,19 +13,14 @@ function ProfilePhoto() {
       className="relative mx-auto mb-8"
       style={{ width: 176, height: 176 }}
     >
-      {/*
-        CSS background-image instead of <img>. This is a different browser
-        rendering path entirely, and it cannot paint pure black — if the
-        file fails to load, backgroundColor shows through as solid gray
-        instead, so we get an unambiguous signal either way.
-      */}
       <div
-        className="relative w-full h-full rounded-full"
+        className="w-full h-full rounded-full"
         style={{
           backgroundImage: `url('${PROFILE_IMAGE_PATH}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundColor: '#3a3a3a',
+          boxShadow: '0 10px 40px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1)',
         }}
       />
 
@@ -35,6 +29,7 @@ function ProfilePhoto() {
         style={{
           inset: -5,
           border: '1.5px solid transparent',
+          backgroundImage: 'linear-gradient(#050505, #050505), linear-gradient(135deg, #4F8CFF, #FF8A00 140%)',
           backgroundOrigin: 'border-box',
           backgroundClip: 'content-box, border-box',
         }}

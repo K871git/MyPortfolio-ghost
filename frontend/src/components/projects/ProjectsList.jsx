@@ -8,8 +8,8 @@ export default function ProjectsSection() {
   const projects = usePortfolioStore((s) => s.projects);
   const openProject = usePortfolioStore((s) => s.openProject);
   const closeProject = usePortfolioStore((s) => s.closeProject);
-  const activeSlug = usePortfolioStore((s) => s.activeProjectSlug);
-  const activeProject = usePortfolioStore((s) => s.getProjectBySlug(activeSlug));
+  // Full detail, not the lightweight list entry — this is the fix.
+  const activeProject = usePortfolioStore((s) => s.activeProjectDetail);
 
   return (
     <section id="projects" className="section relative">

@@ -15,10 +15,45 @@ const usePortfolioStore = create((set, get) => ({
   projects: fallback.projects,
 
   activeProjectSlug: null,
+  // Full case-study detail for the currently open modal — fetched
+  // separately from the lightweight `projects` list, since that list
+  // intentionally omits the heavy fields (architecture, schema, etc).
+  activeProjectDetail: null,
 
   setBootComplete: () => set({ bootComplete: true }),
-  openProject: (slug) => set({ activeProjectSlug: slug }),
-  closeProject: () => set({ activeProjectSlug: null }),
+
+  openProject: (slug) => {
+    // Show whatever we already have immediately (lightweight list entry,
+    // or the fully-detailed local fallback if that's all that's loaded)
+    // so the modal never opens on a blank state — then fetch the real
+    // full detail and swap it in once it arrives.
+    const immediate =
+      get().projects.find((p) => p.slug === slug) ??
+      fallback.projects.find((p) => p.slug === slug) ??
+      null;
+
+    set({ activeProjectSlug: slug, activeProjectDetail: immediate });
+
+    api
+      .getProject(slug)
+      .then((detail) => {
+        // Guard against the user having already closed/switched projects
+        // by the time this resolves.
+        if (get().activeProjectSlug === slug && detail) {
+          set({ activeProjectDetail: detail });
+        }
+      })
+      .catch(() => {
+        // Backend unreachable — fall back to the fully-detailed local
+        // seed data for this project, if we have it.
+        const fb = fallback.projects.find((p) => p.slug === slug);
+        if (get().activeProjectSlug === slug && fb) {
+          set({ activeProjectDetail: fb });
+        }
+      });
+  },
+
+  closeProject: () => set({ activeProjectSlug: null, activeProjectDetail: null }),
 
   hydrate: async () => {
     try {
@@ -42,12 +77,10 @@ const usePortfolioStore = create((set, get) => ({
       });
     } catch (err) {
       // API not reachable (e.g. backend not running) — keep local seed data.
-      console.info('[SYNAPSE/OS] API unreachable, running on local seed data.', err.message);
+      console.info('[GHOST/OS] API unreachable, running on local seed data.', err.message);
       set({ loading: false, usingFallback: true });
     }
   },
-
-  getProjectBySlug: (slug) => get().projects.find((p) => p.slug === slug),
 }));
 
 export default usePortfolioStore;

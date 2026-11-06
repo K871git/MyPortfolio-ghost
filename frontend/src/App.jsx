@@ -61,7 +61,7 @@ export default function App() {
             <ContactTerminal contact={contact} status="Available for opportunities" />
           </main>
 
-          <Footer identity={identity} />
+          <Footer identity={identity} contact={contact} />
         </div>
       )}
     </>

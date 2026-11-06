@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
+import { Github, Linkedin, Mail } from 'lucide-react';
 
-// Confirmed working — kept to a single canonical path now that the
-// original loading issue is resolved. Rename your photo to exactly this.
 const PROFILE_IMAGE_PATH = '/profile1.jpeg';
 
 function ProfilePhoto() {
@@ -24,14 +23,13 @@ function ProfilePhoto() {
         }}
       />
 
+      {/* Subtle blue glow ring */}
       <div
         className="absolute rounded-full pointer-events-none"
         style={{
-          inset: -5,
-          border: '1.5px solid transparent',
-          // backgroundImage: 'linear-gradient(#050505, #050505), linear-gradient(135deg, #4F8CFF, #FF8A00 140%)',
-          backgroundOrigin: 'border-box',
-          backgroundClip: 'content-box, border-box',
+          inset: -3,
+          borderRadius: '50%',
+          boxShadow: '0 0 32px 4px rgba(79,140,255,0.18)',
         }}
       />
 
@@ -50,7 +48,7 @@ function ProfilePhoto() {
   );
 }
 
-export default function Hero({ identity }) {
+export default function Hero({ identity, contact }) {
   return (
     <section
       id="top"
@@ -59,20 +57,27 @@ export default function Hero({ identity }) {
       <div className="container-os relative z-10 text-center">
         <ProfilePhoto />
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-block font-mono text-xs md:text-sm uppercase tracking-[0.3em] text-blue mb-6 px-4 py-1.5 rounded-full border border-blue/20 bg-blue/5"
+          className="inline-flex flex-wrap justify-center gap-1.5 mb-6"
         >
-          {identity.role} · {identity.experience_years}+ Years · {identity.location}
-        </motion.p>
+          {[identity.role, `${identity.experience_years}+ Years`, identity.location].map((item) => (
+            <span
+              key={item}
+              className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-blue px-3 py-1 rounded-full border border-blue/20 bg-blue/5"
+            >
+              {item}
+            </span>
+          ))}
+        </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="font-display text-5xl md:text-7xl font-semibold text-ink leading-[1.05]"
+          className="font-display text-4xl sm:text-5xl md:text-7xl font-semibold text-ink leading-[1.05]"
         >
           {identity.name}
         </motion.h1>
@@ -81,7 +86,7 @@ export default function Hero({ identity }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className="mt-6 max-w-xl mx-auto text-muted text-lg"
+          className="mt-6 max-w-lg mx-auto text-muted text-base sm:text-lg px-2"
         >
           {identity.tagline} Builds products from scratch, turns ideas into
           production systems — APIs, architecture, databases, system design.
@@ -91,14 +96,61 @@ export default function Hero({ identity }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.45 }}
-          className="mt-10 flex items-center justify-center gap-4"
+          className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4"
         >
-          <a href="#projects" data-cursor="interactive" className="btn btn-primary">
+          <a href="#projects" data-cursor="interactive" className="btn btn-primary w-full sm:w-auto">
             View Projects
           </a>
-          <a href="#contact" data-cursor="interactive" className="btn btn-secondary">
+          <a href="#contact" data-cursor="interactive" className="btn btn-secondary w-full sm:w-auto">
             Connect
           </a>
+        </motion.div>
+
+        {/* Social links */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, delay: 0.65 }}
+          className="mt-8 flex items-center justify-center gap-5"
+        >
+          <span className="h-px w-10 bg-white/10" />
+          <div className="flex items-center gap-5">
+            {contact?.github && (
+              <a
+                href={contact.github}
+                target="_blank"
+                rel="noreferrer"
+                data-cursor="interactive"
+                aria-label="GitHub"
+                className="text-muted hover:text-ink transition-colors duration-200"
+              >
+                <Github size={18} />
+              </a>
+            )}
+            {contact?.linkedin && (
+              <a
+                href={contact.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                data-cursor="interactive"
+                aria-label="LinkedIn"
+                className="text-muted hover:text-ink transition-colors duration-200"
+              >
+                <Linkedin size={18} />
+              </a>
+            )}
+            {contact?.email && (
+              <a
+                href={`mailto:${contact.email}`}
+                data-cursor="interactive"
+                aria-label="Email"
+                className="text-muted hover:text-ink transition-colors duration-200"
+              >
+                <Mail size={18} />
+              </a>
+            )}
+          </div>
+          <span className="h-px w-10 bg-white/10" />
         </motion.div>
       </div>
 

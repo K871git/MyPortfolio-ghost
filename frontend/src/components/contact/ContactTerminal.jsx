@@ -99,6 +99,13 @@ export default function ContactTerminal({ contact, status }) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [history]);
 
+  // Auto-run status on mount so the terminal is never empty
+  useEffect(() => {
+    const timer = setTimeout(() => run('status'), 700);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function run(cmd) {
     let output;
     switch (cmd) {
@@ -194,19 +201,32 @@ export default function ContactTerminal({ contact, status }) {
             <div ref={bottomRef} />
           </div>
 
-          <div className="flex flex-wrap gap-2 px-5 pb-5">
-            {COMMANDS.map(({ cmd, label, Icon }) => (
-              <button
-                key={cmd}
-                type="button"
-                data-cursor="interactive"
-                onClick={() => run(cmd)}
-                className="flex items-center gap-1.5 font-mono text-xs px-3 py-1.5 rounded border border-white/10 text-muted hover:text-ink hover:border-blue/50 transition-colors"
-              >
-                <Icon size={12} />
-                --{label}
-              </button>
-            ))}
+          <div className="px-5 pb-5 space-y-2">
+            {/* Contact info commands */}
+            <div className="flex flex-wrap gap-2">
+              {COMMANDS.filter((c) => c.cmd !== 'message').map(({ cmd, label, Icon }) => (
+                <button
+                  key={cmd}
+                  type="button"
+                  data-cursor="interactive"
+                  onClick={() => run(cmd)}
+                  className="flex items-center gap-1.5 font-mono text-xs px-3 py-1.5 rounded border border-white/10 text-muted hover:text-ink hover:border-blue/50 transition-colors"
+                >
+                  <Icon size={12} />
+                  --{label}
+                </button>
+              ))}
+            </div>
+            {/* Compose row */}
+            <button
+              type="button"
+              data-cursor="interactive"
+              onClick={() => run('message')}
+              className="w-full flex items-center justify-center gap-2 font-mono text-xs px-3 py-2 rounded border border-white/10 text-muted hover:text-ink hover:border-blue/50 hover:bg-blue/5 transition-colors"
+            >
+              <MessageSquare size={12} />
+              --message &nbsp;·&nbsp; compose a message
+            </button>
           </div>
         </div>
       </div>

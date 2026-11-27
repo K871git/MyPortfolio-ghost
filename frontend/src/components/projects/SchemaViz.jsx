@@ -12,16 +12,16 @@ export default function SchemaViz({ schema }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: i * 0.1 }}
-          className="rounded-md border border-white/10 overflow-hidden"
+          className="rounded-md border border-border/10 overflow-hidden"
         >
-          <div className="bg-elevated px-3 py-2 font-mono text-xs text-orange border-b border-white/10">
+          <div className="bg-elevated px-3 py-2 font-mono text-xs text-orange border-b border-border/10">
             {table.name}
           </div>
           <ul className="bg-surface">
             {table.columns.map((col) => (
               <li
                 key={col}
-                className="px-3 py-1.5 font-mono text-xs text-muted border-b border-white/5 last:border-b-0"
+                className="px-3 py-1.5 font-mono text-xs text-muted border-b border-border/5 last:border-b-0"
               >
                 {col}
               </li>

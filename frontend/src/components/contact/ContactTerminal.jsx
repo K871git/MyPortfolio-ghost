@@ -5,18 +5,18 @@ import SectionHeading from '../ui/SectionHeading';
 import { api } from '../../services/api';
 
 const COMMANDS = [
-  { cmd: 'email', label: 'email', Icon: Mail },
-  { cmd: 'phone', label: 'phone', Icon: Phone },
-  { cmd: 'linkedin', label: 'linkedin', Icon: Linkedin },
-  { cmd: 'github', label: 'github', Icon: Github },
-  { cmd: 'resume', label: 'resume', Icon: FileText },
-  { cmd: 'status', label: 'status', Icon: Activity },
+  { cmd: 'email',   label: 'email',   Icon: Mail },
+  { cmd: 'phone',   label: 'phone',   Icon: Phone },
+  { cmd: 'linkedin',label: 'linkedin',Icon: Linkedin },
+  { cmd: 'github',  label: 'github',  Icon: Github },
+  { cmd: 'resume',  label: 'resume',  Icon: FileText },
+  { cmd: 'status',  label: 'status',  Icon: Activity },
   { cmd: 'message', label: 'message', Icon: MessageSquare },
 ];
 
 function ContactForm({ onSent }) {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [state, setState] = useState('idle'); // idle | sending | sent | error
+  const [form,  setForm]  = useState({ name: '', email: '', message: '' });
+  const [state, setState] = useState('idle');
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -46,7 +46,7 @@ function ContactForm({ onSent }) {
           required
           value={form.name}
           onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-          className="flex-1 bg-transparent border-b border-white/20 focus:border-blue outline-none font-mono text-sm text-ink py-1"
+          className="flex-1 bg-transparent border-b border-border/20 focus:border-blue outline-none font-mono text-sm text-ink py-1"
           placeholder="your name"
         />
       </div>
@@ -57,7 +57,7 @@ function ContactForm({ onSent }) {
           type="email"
           value={form.email}
           onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-          className="flex-1 bg-transparent border-b border-white/20 focus:border-blue outline-none font-mono text-sm text-ink py-1"
+          className="flex-1 bg-transparent border-b border-border/20 focus:border-blue outline-none font-mono text-sm text-ink py-1"
           placeholder="your@email.com"
         />
       </div>
@@ -69,7 +69,7 @@ function ContactForm({ onSent }) {
           value={form.message}
           onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
           rows={3}
-          className="flex-1 bg-transparent border-b border-white/20 focus:border-blue outline-none font-mono text-sm text-ink py-1 resize-none"
+          className="flex-1 bg-transparent border-b border-border/20 focus:border-blue outline-none font-mono text-sm text-ink py-1 resize-none"
           placeholder="what would you like to build?"
         />
       </div>
@@ -99,7 +99,6 @@ export default function ContactTerminal({ contact, status }) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [history]);
 
-  // Auto-run status on mount so the terminal is never empty
   useEffect(() => {
     const timer = setTimeout(() => run('status'), 700);
     return () => clearTimeout(timer);
@@ -164,12 +163,12 @@ export default function ContactTerminal({ contact, status }) {
   }
 
   return (
-    <section id="contact" className="section relative">
+    <section id="contact" className="section section-alt relative">
       <div className="container-os">
         <SectionHeading eyebrow="Get In Touch" title="> connect kishor" />
 
-        <div className="mt-12 rounded-lg border border-white/10 bg-surface overflow-hidden max-w-3xl">
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-elevated">
+        <div className="mt-12 rounded-lg border border-border/10 bg-surface overflow-hidden max-w-3xl">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-border/10 bg-elevated">
             <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
             <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
             <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
@@ -210,7 +209,7 @@ export default function ContactTerminal({ contact, status }) {
                   type="button"
                   data-cursor="interactive"
                   onClick={() => run(cmd)}
-                  className="flex items-center gap-1.5 font-mono text-xs px-3 py-1.5 rounded border border-white/10 text-muted hover:text-ink hover:border-blue/50 transition-colors"
+                  className="flex items-center gap-1.5 font-mono text-xs px-3 py-1.5 rounded border border-border/10 text-muted hover:text-ink hover:border-blue/50 transition-colors"
                 >
                   <Icon size={12} />
                   --{label}
@@ -222,7 +221,7 @@ export default function ContactTerminal({ contact, status }) {
               type="button"
               data-cursor="interactive"
               onClick={() => run('message')}
-              className="w-full flex items-center justify-center gap-2 font-mono text-xs px-3 py-2 rounded border border-white/10 text-muted hover:text-ink hover:border-blue/50 hover:bg-blue/5 transition-colors"
+              className="w-full flex items-center justify-center gap-2 font-mono text-xs px-3 py-2 rounded border border-border/10 text-muted hover:text-ink hover:border-blue/50 hover:bg-blue/5 transition-colors"
             >
               <MessageSquare size={12} />
               --message &nbsp;·&nbsp; compose a message

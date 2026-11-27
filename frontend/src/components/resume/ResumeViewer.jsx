@@ -23,7 +23,7 @@ function ResumePreview({ identity, inView }) {
     { delay: 0.05, content: <><span className="text-orange">#</span> <span className="text-ink font-semibold">{identity.name}</span></> },
     { delay: 0.15, content: <><span className="text-muted/50">&gt;</span> <span className="text-blue">{identity.role}</span> <span className="text-muted/40">·</span> {identity.experience_years}+ years experience</> },
     { delay: 0.25, content: <><span className="text-muted/50">&gt;</span> {identity.location}</> },
-    { delay: 0.38, content: <span className="text-white/10">{'─'.repeat(36)}</span> },
+    { delay: 0.38, content: <span className="text-border/10">{'─'.repeat(36)}</span> },
     { delay: 0.48, content: <><span className="text-orange">##</span> <span className="text-ink">Core Stack</span></> },
     { delay: 0.56, content: <span className="pl-3 text-muted">PHP · Laravel · React · PostgreSQL · MySQL · Docker</span> },
     { delay: 0.68, content: <><span className="text-orange">##</span> <span className="text-ink">Experience</span></> },
@@ -45,7 +45,7 @@ function ResumePreview({ identity, inView }) {
 
 export default function ResumeViewer({ identity }) {
   const [open, setOpen] = useState(false);
-  const ref = useRef(null);
+  const ref    = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   useEffect(() => {
@@ -70,10 +70,10 @@ export default function ResumeViewer({ identity }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mt-12 max-w-2xl rounded-lg border border-white/10 bg-surface overflow-hidden shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]"
+          className="mt-12 max-w-2xl rounded-lg border border-border/10 bg-surface overflow-hidden shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]"
         >
           {/* Title bar */}
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-elevated">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-border/10 bg-elevated">
             <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
             <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
             <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
@@ -99,7 +99,7 @@ export default function ResumeViewer({ identity }) {
             )}
 
             {/* Actions */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-6 pt-5 border-t border-white/5">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-6 pt-5 border-t border-border/5">
               <button
                 type="button"
                 data-cursor="interactive"
@@ -139,9 +139,9 @@ export default function ResumeViewer({ identity }) {
               exit={{ opacity: 0, scale: 0.96, y: 20 }}
               transition={{ type: 'spring', stiffness: 260, damping: 24 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-surface rounded-lg w-full max-w-3xl h-[85vh] flex flex-col overflow-hidden border border-white/10"
+              className="bg-surface rounded-lg w-full max-w-3xl h-[85vh] flex flex-col overflow-hidden border border-border/10"
             >
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-elevated">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-border/10 bg-elevated">
                 <span className="font-mono text-xs text-muted truncate pr-2">
                   Resume.md — Document Viewer
                 </span>
@@ -159,7 +159,7 @@ export default function ResumeViewer({ identity }) {
                     data-cursor="interactive"
                     onClick={(e) => { e.stopPropagation(); setOpen(false); }}
                     aria-label="Close resume viewer"
-                    className="flex items-center justify-center w-9 h-9 rounded-full text-muted hover:text-ink hover:bg-white/5 active:scale-95 transition-all"
+                    className="flex items-center justify-center w-9 h-9 rounded-full text-muted hover:text-ink hover:bg-border/5 active:scale-95 transition-all"
                   >
                     ✕
                   </button>
@@ -171,7 +171,7 @@ export default function ResumeViewer({ identity }) {
                 data-cursor="interactive"
                 onClick={(e) => { e.stopPropagation(); setOpen(false); }}
                 aria-label="Close resume viewer"
-                className="fixed top-4 right-4 z-20 flex items-center justify-center w-11 h-11 rounded-full bg-elevated border border-white/15 text-muted hover:text-ink hover:border-blue/40 active:scale-95 transition-all md:hidden"
+                className="fixed top-4 right-4 z-20 flex items-center justify-center w-11 h-11 rounded-full bg-elevated border border-border/15 text-muted hover:text-ink hover:border-blue/40 active:scale-95 transition-all md:hidden"
               >
                 ✕
               </button>

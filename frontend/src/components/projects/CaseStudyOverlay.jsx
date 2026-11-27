@@ -54,12 +54,12 @@ function SectionLabel({ Icon, colorClass, bgClass, borderClass, children }) {
 }
 
 const TABS = [
-  { id: 'problem', label: 'Problem', Icon: ShieldAlert, color: 'text-orange', bg: 'bg-orange/10', border: 'border-orange/30', show: (p) => !!p.problem_statement },
-  { id: 'architecture', label: 'Architecture', Icon: Network, color: 'text-blue', bg: 'bg-blue/10', border: 'border-blue/30', show: (p) => !!p.architecture_data },
-  { id: 'schema', label: 'Schema', Icon: Database, color: 'text-success', bg: 'bg-success/10', border: 'border-success/30', show: (p) => !!p.database_schema },
-  { id: 'api-flow', label: 'API Flow', Icon: Workflow, color: 'text-blue', bg: 'bg-blue/10', border: 'border-blue/30', show: (p) => p.api_flow?.steps?.length > 0 },
-  { id: 'outcomes', label: 'Outcomes', Icon: Award, color: 'text-orange', bg: 'bg-orange/10', border: 'border-orange/30', show: () => true },
-  { id: 'gallery', label: 'Screenshots', Icon: ImageIcon, color: 'text-success', bg: 'bg-success/10', border: 'border-success/30', show: (p) => p.screenshots?.length > 0 },
+  { id: 'problem',      label: 'Problem',      Icon: ShieldAlert,  color: 'text-orange',  bg: 'bg-orange/10',  border: 'border-orange/30',  show: (p) => !!p.problem_statement },
+  { id: 'architecture', label: 'Architecture', Icon: Network,      color: 'text-blue',    bg: 'bg-blue/10',    border: 'border-blue/30',    show: (p) => !!p.architecture_data },
+  { id: 'schema',       label: 'Schema',       Icon: Database,     color: 'text-success', bg: 'bg-success/10', border: 'border-success/30', show: (p) => !!p.database_schema },
+  { id: 'api-flow',     label: 'API Flow',     Icon: Workflow,     color: 'text-blue',    bg: 'bg-blue/10',    border: 'border-blue/30',    show: (p) => p.api_flow?.steps?.length > 0 },
+  { id: 'outcomes',     label: 'Outcomes',     Icon: Award,        color: 'text-orange',  bg: 'bg-orange/10',  border: 'border-orange/30',  show: () => true },
+  { id: 'gallery',      label: 'Screenshots',  Icon: ImageIcon,    color: 'text-success', bg: 'bg-success/10', border: 'border-success/30', show: (p) => p.screenshots?.length > 0 },
 ];
 
 function TabContent({ tab, project }) {
@@ -89,7 +89,6 @@ function TabContent({ tab, project }) {
             <ArchitectureDiagram data={project.architecture_data} />
           </div>
 
-          {/* Full component list, not just what's legible in the diagram */}
           {project.architecture_data.nodes?.length > 0 && (
             <div className="mb-6">
               <h4 className="font-mono text-[11px] uppercase tracking-widest text-muted mb-2.5">Components</h4>
@@ -97,7 +96,7 @@ function TabContent({ tab, project }) {
                 {project.architecture_data.nodes.map((node) => (
                   <span
                     key={node}
-                    className="font-mono text-[11px] px-2.5 py-1 rounded border border-white/10 bg-white/[0.02] text-ink"
+                    className="font-mono text-[11px] px-2.5 py-1 rounded border border-border/10 bg-border/[0.02] text-ink"
                   >
                     {node}
                   </span>
@@ -106,7 +105,6 @@ function TabContent({ tab, project }) {
             </div>
           )}
 
-          {/* The full data-flow description, written out, not just implied by the diagram lines */}
           {project.architecture_data.flow?.length > 0 && (
             <div>
               <h4 className="font-mono text-[11px] uppercase tracking-widest text-muted mb-2.5">Data Flow</h4>
@@ -143,7 +141,7 @@ function TabContent({ tab, project }) {
             {project.api_flow.steps.map((step, i) => (
               <li
                 key={i}
-                className="flex gap-4 items-start font-mono text-sm p-3 rounded-lg border border-white/5 bg-white/[0.02]"
+                className="flex gap-4 items-start font-mono text-sm p-3 rounded-lg border border-border/5 bg-border/[0.02]"
               >
                 <span className="text-blue flex-shrink-0 w-6 font-semibold">{String(i + 1).padStart(2, '0')}</span>
                 <span className="text-muted">{step}</span>
@@ -160,10 +158,10 @@ function TabContent({ tab, project }) {
             Results & retrospective
           </SectionLabel>
           <div className="grid sm:grid-cols-2 gap-8">
-            <ListBlock title="Challenges" items={project.challenges} Icon={AlertTriangle} colorClass="text-orange" bgClass="bg-orange/10" borderClass="border-orange/30" />
-            <ListBlock title="Trade-Offs" items={project.trade_offs} Icon={GitCompare} colorClass="text-blue" bgClass="bg-blue/10" borderClass="border-blue/30" />
-            <ListBlock title="Lessons Learned" items={project.lessons_learned} Icon={Lightbulb} colorClass="text-success" bgClass="bg-success/10" borderClass="border-success/30" />
-            <ListBlock title="Outcome Metrics" items={project.outcome_metrics} Icon={TrendingUp} colorClass="text-orange" bgClass="bg-orange/10" borderClass="border-orange/30" />
+            <ListBlock title="Challenges"      items={project.challenges}      Icon={AlertTriangle} colorClass="text-orange"  bgClass="bg-orange/10"  borderClass="border-orange/30" />
+            <ListBlock title="Trade-Offs"      items={project.trade_offs}      Icon={GitCompare}    colorClass="text-blue"    bgClass="bg-blue/10"    borderClass="border-blue/30" />
+            <ListBlock title="Lessons Learned" items={project.lessons_learned} Icon={Lightbulb}     colorClass="text-success" bgClass="bg-success/10" borderClass="border-success/30" />
+            <ListBlock title="Outcome Metrics" items={project.outcome_metrics} Icon={TrendingUp}    colorClass="text-orange"  bgClass="bg-orange/10"  borderClass="border-orange/30" />
           </div>
         </div>
       );
@@ -181,7 +179,7 @@ function TabContent({ tab, project }) {
                 src={src}
                 alt={`${project.title} screenshot ${i + 1}`}
                 loading="lazy"
-                className="w-full rounded-lg border border-white/10"
+                className="w-full rounded-lg border border-border/10"
               />
             ))}
           </div>
@@ -194,9 +192,9 @@ function TabContent({ tab, project }) {
 }
 
 export default function CaseStudyOverlay({ project, onClose }) {
-  const tabs = TABS.filter((t) => t.show(project));
+  const tabs        = TABS.filter((t) => t.show(project));
   const [activeTabId, setActiveTabId] = useState(tabs[0]?.id ?? null);
-  const activeTab = tabs.find((t) => t.id === activeTabId) ?? tabs[0];
+  const activeTab   = tabs.find((t) => t.id === activeTabId) ?? tabs[0];
 
   useEffect(() => {
     setActiveTabId(tabs[0]?.id ?? null);
@@ -228,11 +226,11 @@ export default function CaseStudyOverlay({ project, onClose }) {
         exit={{ opacity: 0, scale: 0.96, y: 16 }}
         transition={{ type: 'spring', stiffness: 260, damping: 26 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-4xl max-h-[88vh] rounded-xl border border-white/10 bg-bg overflow-hidden flex flex-col"
+        className="relative w-full max-w-4xl max-h-[88vh] rounded-xl border border-border/10 bg-bg overflow-hidden flex flex-col"
         style={{ boxShadow: '0 40px 100px -30px rgba(0,0,0,0.8)' }}
       >
         {/* Panel header */}
-        <div className="flex items-center gap-3 px-4 sm:px-5 py-3 border-b border-white/10 bg-elevated flex-shrink-0">
+        <div className="flex items-center gap-3 px-4 sm:px-5 py-3 border-b border-border/10 bg-elevated flex-shrink-0">
           <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
@@ -244,15 +242,15 @@ export default function CaseStudyOverlay({ project, onClose }) {
             data-cursor="interactive"
             onClick={onClose}
             aria-label="Close case study"
-            className="flex items-center justify-center w-9 h-9 rounded-full text-muted hover:text-ink hover:bg-white/10 active:scale-95 transition-all flex-shrink-0"
+            className="flex items-center justify-center w-9 h-9 rounded-full text-muted hover:text-ink hover:bg-border/10 active:scale-95 transition-all flex-shrink-0"
             style={{ touchAction: 'manipulation' }}
           >
             <X size={18} />
           </button>
         </div>
 
-        {/* Compact overview — full tech stack now, nothing truncated */}
-        <div className="px-4 sm:px-6 pt-5 pb-4 border-b border-white/10 flex-shrink-0">
+        {/* Compact overview */}
+        <div className="px-4 sm:px-6 pt-5 pb-4 border-b border-border/10 flex-shrink-0">
           <h2 className="font-display text-xl sm:text-2xl text-ink">{project.title}</h2>
           <p className="text-muted text-sm mt-1.5 max-w-2xl">{project.description}</p>
 
@@ -260,7 +258,7 @@ export default function CaseStudyOverlay({ project, onClose }) {
             {project.tech_stack?.map((tech) => (
               <span
                 key={tech}
-                className="font-mono text-[10px] uppercase tracking-wide px-2 py-0.5 rounded border border-white/10 text-muted"
+                className="font-mono text-[10px] uppercase tracking-wide px-2 py-0.5 rounded border border-border/10 text-muted"
               >
                 {tech}
               </span>
@@ -282,7 +280,7 @@ export default function CaseStudyOverlay({ project, onClose }) {
         </div>
 
         {/* Icon + color coded tabs */}
-        <div className="border-b border-white/10 bg-bg/80 flex-shrink-0">
+        <div className="border-b border-border/10 bg-bg/80 flex-shrink-0">
           <div className="flex items-center gap-1.5 px-4 sm:px-6 py-2.5 overflow-x-auto no-scrollbar">
             {tabs.map((tab) => {
               const isActive = activeTab?.id === tab.id;
@@ -293,7 +291,7 @@ export default function CaseStudyOverlay({ project, onClose }) {
                   data-cursor="interactive"
                   onClick={() => setActiveTabId(tab.id)}
                   className={`flex-shrink-0 flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wide px-3 py-1.5 rounded-full transition-colors whitespace-nowrap border ${
-                    isActive ? `${tab.bg} ${tab.color} ${tab.border}` : 'text-muted border-transparent hover:text-ink hover:bg-white/5'
+                    isActive ? `${tab.bg} ${tab.color} ${tab.border}` : 'text-muted border-transparent hover:text-ink hover:bg-border/5'
                   }`}
                 >
                   <tab.Icon size={12} />

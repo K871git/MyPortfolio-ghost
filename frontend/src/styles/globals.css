@@ -2,6 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Theme variables ─────────────────────────────────────────────────────── */
+/* Default = dark. Add class "light" to <html> for light theme.               */
+/* Values are bare RGB channels so Tailwind's / opacity modifier works.        */
+
+:root {
+  --c-bg:       5   5   5;
+  --c-surface:  17  17  17;
+  --c-elevated: 23  23  23;
+  --c-ink:      250 250 250;
+  --c-muted:    179 179 179;
+  --c-blue:     79  140 255;
+  --c-orange:   255 138 0;
+  --c-success:  61  220 132;
+  --c-border:   255 255 255;   /* white borders in dark mode  */
+}
+
+:root.light {
+  --c-bg:       238 241 250;   /* slightly warmer lavender slate */
+  --c-surface:  255 255 255;
+  --c-elevated: 244 246 253;
+  --c-ink:      12  12  22;
+  --c-muted:    82  82  110;
+  --c-blue:     37  99  235;
+  --c-orange:   180 60  10;
+  --c-success:  22  163 74;
+  --c-border:   12  12  22;    /* dark borders in light mode  */
+}
+
+/* ─── Smooth theme transition ─────────────────────────────────────────────── */
+html {
+  transition: background-color 0.3s ease;
+}
+
+body, main, header, nav, footer, section,
+.glass-panel, .glass-header {
+  transition:
+    background-color 0.25s ease,
+    border-color     0.25s ease,
+    color            0.2s  ease,
+    box-shadow       0.25s ease;
+}
+
+/* ─── Glassmorphism utilities ─────────────────────────────────────────────── */
+.glass-panel {
+  background:              rgb(var(--c-surface) / 0.78);
+  backdrop-filter:         blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border:                  1px solid rgb(var(--c-border) / 0.1);
+  box-shadow:
+    0 24px 70px -20px rgb(var(--c-bg) / 0.6),
+    inset 0 1px 0 rgb(var(--c-border) / 0.1),
+    inset 0 -1px 0 rgb(var(--c-bg) / 0.1);
+}
+
+.glass-header {
+  background:              rgb(var(--c-elevated) / 0.85);
+  backdrop-filter:         blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom:           1px solid rgb(var(--c-border) / 0.08);
+}
+
+/* ─── Base ────────────────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
 }
@@ -10,27 +72,26 @@ html {
   color-scheme: dark;
 }
 
-* {
+:root.light {
+  color-scheme: light;
+}
+
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
+html, body, #root {
   height: 100%;
-  background: #050505;
+  background: rgb(var(--c-bg));
 }
 
 body {
   font-family: 'Inter', sans-serif;
+  color: rgb(var(--c-ink));
   overflow-x: hidden;
   cursor: none;
 }
 
-/* The browser's own pointer/hand cursor renders on links and buttons
-   regardless of body's cursor, since 'auto' resolves to a pointer for
-   clickable elements. Force it off everywhere so only the custom skull
-   cursor is ever shown. */
 a, button, [role="button"], input, textarea, select, label, summary,
 [data-cursor="interactive"] {
   cursor: none !important;
@@ -55,53 +116,65 @@ h1, h2, h3, h4 {
   line-height: 1.15;
 }
 
+/* Major headlines deepen on hover — tighter tracking + depth shadow */
+section h1, section h2, section h3 {
+  transition:
+    color          0.22s ease,
+    letter-spacing 0.22s ease,
+    filter         0.22s ease;
+}
+
+/* Dark mode: headline brightens with blue glow */
+section h1:hover, section h2:hover, section h3:hover {
+  letter-spacing: -0.028em;
+  filter: drop-shadow(0 0 10px rgb(var(--c-blue) / 0.22));
+  color: rgb(var(--c-ink));
+}
+
+/* Light mode: headline goes full black + heavier shadow */
+:root.light section h1:hover,
+:root.light section h2:hover,
+:root.light section h3:hover {
+  color: rgb(0 0 0);
+  filter:
+    drop-shadow(0 1px 4px rgba(0, 0, 0, 0.35))
+    contrast(1.08);
+  letter-spacing: -0.028em;
+}
+
 p {
   line-height: 1.7;
 }
 
 ::selection {
-  background: rgba(79, 140, 255, 0.28);
-  color: #fafafa;
+  background: rgb(var(--c-blue) / 0.28);
+  color: rgb(var(--c-ink));
 }
 
 .font-mono, code, pre {
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Thin, dark scrollbar to match the system aesthetic */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #050505;
-}
+/* ─── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #222222;
-  border-radius: 4px;
+  background: rgb(var(--c-border) / 0.14);
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #333333;
+  background: rgb(var(--c-blue) / 0.5);
 }
 
-/* Hides scrollbar on horizontally-scrollable nav strips (jump-nav, etc)
-   while keeping them scrollable via touch/trackpad. */
-.no-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* Remove the gray flash Android/iOS shows on tap, and ensure taps register
-   immediately rather than waiting for a possible double-tap-to-zoom. */
 a, button, [role="button"] {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-/* Section rhythm — tightened for a more compact, professional feel */
+/* ─── Section rhythm ──────────────────────────────────────────────────────── */
 .section {
   padding-top: 90px;
   padding-bottom: 90px;
@@ -114,8 +187,6 @@ a, button, [role="button"] {
   }
 }
 
-/* A faint horizontal fade at the top of each section, instead of a hard
-   border — reads as more premium/seamless between sections. */
 .section::before {
   content: '';
   position: absolute;
@@ -124,7 +195,19 @@ a, button, [role="button"] {
   transform: translateX(-50%);
   width: min(100%, 1200px);
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgb(var(--c-blue) / 0.1) 20%,
+    rgb(var(--c-border) / 0.12) 50%,
+    rgb(var(--c-orange) / 0.08) 80%,
+    transparent 100%
+  );
+}
+
+/* Alternate section background tint for visual rhythm */
+.section-alt {
+  background-color: rgb(var(--c-surface) / 0.35);
 }
 
 .container-os {
@@ -135,30 +218,113 @@ a, button, [role="button"] {
   padding-right: 24px;
 }
 
-/* Respect reduced motion globally as a CSS-level fallback */
+/* ─── Extra keyframes ─────────────────────────────────────────────────────── */
+
+/* Gentle float for the terminal decoration */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Shimmer sweep for gradient borders / skeletons */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* Fade-up used in some decorative elements */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Utility classes ─────────────────────────────────────────────────────── */
+
+/* Dot grid background — add to any section wrapper */
+.bg-dots {
+  background-image: radial-gradient(rgb(var(--c-border) / 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Animated gradient shimmer text */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--c-blue)) 0%,
+    rgb(var(--c-orange)) 50%,
+    rgb(var(--c-blue)) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Reusable tag/pill badge */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgb(var(--c-border) / 0.1);
+  color: rgb(var(--c-muted));
+  background: rgb(var(--c-elevated));
+  transition: border-color 0.2s, color 0.2s;
+}
+.tag:hover {
+  border-color: rgb(var(--c-blue) / 0.35);
+  color: rgb(var(--c-blue));
+}
+
+/* Hover glow card — wrap project/skill cards */
+.glow-card {
+  position: relative;
+  transition: box-shadow 0.3s ease;
+}
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgb(var(--c-blue) / 0.2), rgb(var(--c-orange) / 0.1));
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.glow-card:hover::before { opacity: 1; }
+
+/* ─── Reduced motion ──────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
+    animation-duration:      0.001ms !important;
+    animation-iteration-count: 1    !important;
+    transition-duration:     0.001ms !important;
+    scroll-behavior:         auto   !important;
   }
 }
 
+/* ─── Glass (legacy helper) ───────────────────────────────────────────────── */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:              rgb(var(--c-surface) / 0.08);
+  backdrop-filter:         blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border:                  1px solid rgb(var(--c-border) / 0.08);
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, #4f8cff, #ff8a00);
+  background: linear-gradient(90deg, rgb(var(--c-blue)), rgb(var(--c-orange)));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Shared button styles — consistent, elegant, used across Hero/Contact/etc */
+/* ─── Buttons ─────────────────────────────────────────────────────────────── */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -173,25 +339,44 @@ a, button, [role="button"] {
   transition: all 0.25s ease;
   white-space: nowrap;
 }
-.btn:active {
-  transform: scale(0.97);
-}
+.btn:active { transform: scale(0.97); }
+
 .btn-primary {
-  background: rgba(79, 140, 255, 0.12);
-  border: 1px solid rgba(79, 140, 255, 0.4);
-  color: #4f8cff;
+  background:  rgb(var(--c-blue) / 0.12);
+  border:      1px solid rgb(var(--c-blue) / 0.4);
+  color:       rgb(var(--c-blue));
+  box-shadow:  0 2px 12px rgb(var(--c-blue) / 0.08);
 }
 .btn-primary:hover {
-  background: rgba(79, 140, 255, 0.2);
-  border-color: rgba(79, 140, 255, 0.7);
-  box-shadow: 0 0 24px rgba(79, 140, 255, 0.18);
+  background:  rgb(var(--c-blue) / 0.2);
+  border-color: rgb(var(--c-blue) / 0.7);
+  box-shadow:  0 0 28px rgb(var(--c-blue) / 0.25), 0 2px 8px rgb(var(--c-blue) / 0.1);
+  transform: translateY(-1px);
 }
+.btn-primary:active { transform: translateY(0) scale(0.97); }
+
 .btn-secondary {
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #b3b3b3;
+  background:  rgb(var(--c-surface) / 0.5);
+  border:      1px solid rgb(var(--c-border) / 0.18);
+  color:       rgb(var(--c-muted));
 }
 .btn-secondary:hover {
-  color: #fafafa;
-  border-color: rgba(255, 255, 255, 0.3);
+  color:        rgb(var(--c-ink));
+  border-color: rgb(var(--c-border) / 0.35);
+  background:   rgb(var(--c-surface) / 0.8);
+  transform: translateY(-1px);
+}
+.btn-secondary:active { transform: translateY(0) scale(0.97); }
+
+/* ─── Force dark for boot sequence ───────────────────────────────────────── */
+.force-dark {
+  --c-bg:       5   5   5;
+  --c-surface:  17  17  17;
+  --c-elevated: 23  23  23;
+  --c-ink:      250 250 250;
+  --c-muted:    179 179 179;
+  --c-border:   255 255 255;
+  background: rgb(var(--c-bg));
+  color: rgb(var(--c-ink));
+  min-height: 100vh;
 }

@@ -13,17 +13,21 @@ import ExperienceLog from './components/experience/ExperienceLog';
 import ResumeViewer from './components/resume/ResumeViewer';
 import ContactTerminal from './components/contact/ContactTerminal';
 import usePortfolioStore from './store/usePortfolioStore';
+import useTheme from './hooks/useTheme';
+import ThemeTransition from './components/ui/ThemeTransition';
 
 export default function App() {
-  const bootComplete = usePortfolioStore((s) => s.bootComplete);
+  const bootComplete   = usePortfolioStore((s) => s.bootComplete);
   const setBootComplete = usePortfolioStore((s) => s.setBootComplete);
-  const hydrate = usePortfolioStore((s) => s.hydrate);
+  const hydrate        = usePortfolioStore((s) => s.hydrate);
 
-  const identity = usePortfolioStore((s) => s.identity);
-  const contact = usePortfolioStore((s) => s.contact);
+  const identity   = usePortfolioStore((s) => s.identity);
+  const contact    = usePortfolioStore((s) => s.contact);
   const aboutSteps = usePortfolioStore((s) => s.aboutSteps);
-  const skills = usePortfolioStore((s) => s.skills);
+  const skills     = usePortfolioStore((s) => s.skills);
   const experiences = usePortfolioStore((s) => s.experiences);
+
+  const { theme, toggleTheme } = useTheme();
 
   const [skipBoot] = useState(() => sessionStorage.getItem('ghost-os-booted') === '1');
 
@@ -42,14 +46,21 @@ export default function App() {
       <CustomCursor />
 
       {!bootComplete && !skipBoot && (
-        <BootSequence identity={identity} onComplete={handleBootComplete} />
+        <div className="force-dark">
+          <BootSequence identity={identity} onComplete={handleBootComplete} />
+        </div>
       )}
 
       {(bootComplete || skipBoot) && (
         <div className="relative">
-          <GhostBackground />
+          <ThemeTransition theme={theme} />
+          <GhostBackground theme={theme} />
           <ScreenOverlay />
-          <Nav status={usePortfolioStore.getState().identity.availability} />
+          <Nav
+            status={usePortfolioStore.getState().identity.availability}
+            theme={theme}
+            toggleTheme={toggleTheme}
+          />
 
           <main className="relative z-10">
             <Hero identity={identity} contact={contact} />

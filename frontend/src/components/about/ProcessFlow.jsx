@@ -14,14 +14,14 @@ const ICONS = {
 };
 
 const DELIVERABLES = {
-  problem: 'Problem statement + success criteria written down',
-  research: 'Prior art notes + tool decision rationale',
+  problem:      'Problem statement + success criteria written down',
+  research:     'Prior art notes + tool decision rationale',
   architecture: 'ERD · API contract · service boundary diagram',
-  development: 'Working vertical slice + reviewable commits',
-  testing: 'Failure-path test cases + auth boundary coverage',
-  deployment: 'Deployed feature + rollback plan documented',
+  development:  'Working vertical slice + reviewable commits',
+  testing:      'Failure-path test cases + auth boundary coverage',
+  deployment:   'Deployed feature + rollback plan documented',
   optimization: 'EXPLAIN output reviewed + measured fix applied',
-  iteration: 'Changelog entry + next hypothesis queued',
+  iteration:    'Changelog entry + next hypothesis queued',
 };
 
 export default function ProcessFlow({ steps }) {
@@ -35,7 +35,7 @@ export default function ProcessFlow({ steps }) {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   return (
-    <section id="about" ref={containerRef} className="section relative">
+    <section id="about" ref={containerRef} className="section section-alt relative">
       <div className="container-os">
         <SectionHeading
           eyebrow="How I Think"
@@ -48,7 +48,7 @@ export default function ProcessFlow({ steps }) {
           {/* Left: node list */}
           <div className="relative md:sticky md:top-32 md:self-start">
             <div className="relative pl-10">
-              <div className="absolute left-[15px] top-2 bottom-2 w-px bg-white/10" />
+              <div className="absolute left-[15px] top-2 bottom-2 w-px bg-border/10" />
               <motion.div
                 style={{ height: lineHeight }}
                 className="absolute left-[15px] top-2 w-px bg-gradient-to-b from-blue to-orange origin-top"
@@ -66,7 +66,7 @@ export default function ProcessFlow({ steps }) {
                         className={`absolute -left-10 flex items-center justify-center w-8 h-8 rounded-full border font-mono text-xs transition-all duration-300 ${
                           active === i
                             ? 'bg-blue border-blue text-bg scale-110'
-                            : 'bg-surface border-white/15 text-muted'
+                            : 'bg-surface border-border/15 text-muted'
                         }`}
                       >
                         {ICONS[step.icon] ?? i + 1}
@@ -97,7 +97,7 @@ export default function ProcessFlow({ steps }) {
                   data-cursor="interactive"
                   onClick={() => setActive(i)}
                   className={`h-1 rounded-full transition-all duration-300 ${
-                    i === active ? 'w-8 bg-blue' : 'w-3 bg-white/15 hover:bg-white/30'
+                    i === active ? 'w-8 bg-blue' : 'w-3 bg-border/15 hover:bg-border/30'
                   }`}
                   aria-label={`Step ${i + 1}`}
                 />
@@ -118,7 +118,7 @@ export default function ProcessFlow({ steps }) {
                 >
                   <div className="flex items-start gap-6">
                     {/* Decorative large step number */}
-                    <span className="font-mono font-bold leading-none select-none text-white/[0.04] text-[88px] mt-[-8px] flex-shrink-0 hidden sm:block">
+                    <span className="font-mono font-bold leading-none select-none text-border/[0.04] text-[88px] mt-[-8px] flex-shrink-0 hidden sm:block">
                       {String(i + 1).padStart(2, '0')}
                     </span>
 
@@ -152,7 +152,7 @@ export default function ProcessFlow({ steps }) {
                           data-cursor="interactive"
                           onClick={() => setActive((a) => Math.max(0, a - 1))}
                           disabled={active === 0}
-                          className="font-mono text-xs text-muted hover:text-ink disabled:opacity-20 transition-colors px-3 py-1.5 rounded border border-white/10 hover:border-white/25"
+                          className="font-mono text-xs text-muted hover:text-ink disabled:opacity-20 transition-colors px-3 py-1.5 rounded border border-border/10 hover:border-border/25"
                         >
                           ← prev
                         </button>
@@ -161,7 +161,7 @@ export default function ProcessFlow({ steps }) {
                           data-cursor="interactive"
                           onClick={() => setActive((a) => Math.min(steps.length - 1, a + 1))}
                           disabled={active === steps.length - 1}
-                          className="font-mono text-xs text-muted hover:text-ink disabled:opacity-20 transition-colors px-3 py-1.5 rounded border border-white/10 hover:border-white/25"
+                          className="font-mono text-xs text-muted hover:text-ink disabled:opacity-20 transition-colors px-3 py-1.5 rounded border border-border/10 hover:border-border/25"
                         >
                           next →
                         </button>

@@ -5,12 +5,12 @@ import SectionHeading from '../ui/SectionHeading';
 import getSkillIcon from '../../utils/skillIcons';
 
 export default function SkillsIDE({ skills }) {
-  const categories = Object.entries(skills || {});
+  const categories   = Object.entries(skills || {});
   const [activeCategory, setActiveCategory] = useState(categories[0]?.[0] ?? null);
-  const activeItems = activeCategory ? (skills[activeCategory] || []) : [];
+  const activeItems  = activeCategory ? (skills[activeCategory] || []) : [];
 
   return (
-    <section id="toolbox" className="section relative">
+    <section id="toolbox" className="section relative bg-dots">
       <div className="container-os">
         <SectionHeading
           eyebrow="Engineering Toolbox"
@@ -21,8 +21,8 @@ export default function SkillsIDE({ skills }) {
         <div className="mt-16 grid md:grid-cols-[260px_1fr] gap-4 items-start">
 
           {/* LEFT: Category explorer */}
-          <div className="rounded-lg overflow-hidden border border-white/10 bg-surface shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
-            <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-elevated">
+          <div className="rounded-lg overflow-hidden border border-border/10 bg-surface shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
+            <div className="flex items-center gap-2 px-4 py-3 border-b border-border/10 bg-elevated">
               <span className="w-3 h-3 rounded-full bg-[#FF5F56]" />
               <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
               <span className="w-3 h-3 rounded-full bg-[#27C93F]" />
@@ -40,7 +40,7 @@ export default function SkillsIDE({ skills }) {
                     className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-md transition-all duration-150 text-left border ${
                       isActive
                         ? 'bg-blue/10 border-blue/20'
-                        : 'border-transparent hover:bg-white/[0.04]'
+                        : 'border-transparent hover:bg-border/[0.04]'
                     }`}
                   >
                     {isActive
@@ -58,13 +58,13 @@ export default function SkillsIDE({ skills }) {
           </div>
 
           {/* RIGHT: Active category skill cards */}
-          <div className="rounded-lg overflow-hidden border border-white/10 bg-surface shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)] min-h-[260px]">
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-elevated">
+          <div className="rounded-lg overflow-hidden border border-border/10 bg-surface shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)] min-h-[260px]">
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-border/10 bg-elevated">
               <span className="font-mono text-xs text-muted">
                 {activeCategory ? (
                   <>
                     <span className="text-blue">{activeCategory}</span>
-                    <span className="text-white/20 mx-1.5">/</span>
+                    <span className="text-border/20 mx-1.5">/</span>
                     <span>{activeItems.length} tools</span>
                   </>
                 ) : 'select a category'}
@@ -89,7 +89,7 @@ export default function SkillsIDE({ skills }) {
                         initial={{ opacity: 0, scale: 0.94 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: i * 0.04, duration: 0.2 }}
-                        className="flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-elevated hover:border-blue/25 hover:bg-blue/5 transition-all duration-200 group"
+                        className="flex items-center gap-3 p-3 rounded-lg border border-border/5 bg-elevated hover:border-blue/25 hover:bg-blue/5 transition-all duration-200 group"
                       >
                         <Icon size={15} className="text-blue/60 group-hover:text-blue flex-shrink-0 transition-colors" />
                         <span className="font-mono text-sm text-muted group-hover:text-ink transition-colors leading-tight">
